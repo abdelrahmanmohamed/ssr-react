@@ -50,6 +50,7 @@
     "react-addons-test-utils": "^15.6.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "cors": "^2.8.5"
   }
 }

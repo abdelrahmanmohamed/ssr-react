@@ -9,8 +9,10 @@ import Hello from "./public/components/Hello";
 import MultipleRoutes from "./public/components/MultipleRoutes";
 
 const app = express();
+const cors = require('cors');
 
 app.use(compression());
+app.use(cors())
 
 app.use("/static", express.static(path.resolve(__dirname, "public")));
 
@@ -42,8 +44,8 @@ app.get("/", (req, res) => {
   componentStream.pipe(res, { end: false });
 
   const htmlEnd = `</div>
-    <script src="/static/vendors~home.js~multipleRoutes.js"></script>
-    <script src="/static/home.js"></script>
+    <script src="http://localhost:3000/static/vendors~home.js~multipleRoutes.js"></script>
+    <script src="http://localhost:3000/static/home.js"></script>
   </body>
   </html>`;
 
@@ -64,7 +66,7 @@ app.get("/nohtml", (req, res) => {
 
 
   const response = `<div>`+renderResult+
-    `<script src="/static/home.js"></script>
+    `<script src="http://localhost:3000/static/home.js"></script>
     </div>`;
     res.set('Content-Type', 'text/html')
       .set('Access-Control-Allow-Origin', ' *')
