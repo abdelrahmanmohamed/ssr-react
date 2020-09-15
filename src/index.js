@@ -6,6 +6,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { StaticRouter as Router } from "react-router-dom";
 import Hello from "./public/components/Hello";
+import MasterForm from "./public/components/masterForm";
 import MultipleRoutes from "./public/components/MultipleRoutes";
 
 const app = express();
@@ -35,7 +36,7 @@ app.get("/", (req, res) => {
       <script>window.__INITIAL__DATA__ = ${JSON.stringify({ name })}</script>
     </head>
     <body>
-    <div id="root">`;
+    <div id="root">    `;
 
   res = res.set('Content-Type', 'text/html')
       .set('Access-Control-Allow-Origin', ' *')
@@ -122,6 +123,31 @@ app.get("/tutorial.json", (req, res) => {
   });
 });
 
+app.get("/masterform", (req, res) => {
+  const componentStream = ReactDOMServer.renderToNodeStream(
+    <MasterForm />
+  );
+
+  const htmlStart = `    
+    <div id="masterFormDiv">    `;
+
+  res = res.set('Content-Type', 'text/html')
+    .set('Access-Control-Allow-Origin', ' *')
+  res.write(htmlStart);
+
+  componentStream.pipe(res, { end: false });
+
+  const htmlEnd = `</div>
+    <script src="http://localhost:3000/static/masterForm.js"></script>
+`;
+
+  componentStream.on("end", () => {
+    res.write(htmlEnd);
+    res.end();
+  });
+});
+
+
 app.get("*", (req, res) => {
   res.status(404).send(`
     <html>
@@ -137,6 +163,9 @@ app.get("*", (req, res) => {
       </body>
     </html>`);
 });
+
+
+
 
 const { PORT = 3000 } = process.env;
 
