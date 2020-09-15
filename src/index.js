@@ -35,6 +35,8 @@ app.get("/", (req, res) => {
     <body>
     <div id="root">`;
 
+  res = res.set('Content-Type', 'text/html')
+      .set('Access-Control-Allow-Origin', ' *')
   res.write(htmlStart);
 
   componentStream.pipe(res, { end: false });
@@ -46,10 +48,27 @@ app.get("/", (req, res) => {
   </html>`;
 
   componentStream.on("end", () => {
-    res.write(htmlEnd);
-
+        res.write(htmlEnd);
     res.end();
   });
+});
+
+
+app.get("/nohtml", (req, res) => {
+  const { name = "Marvelous Wololo" } = req.query;
+
+  const renderResult = ReactDOMServer.renderToString (
+      <Hello name={name} />
+  );
+
+
+
+  const response = `<div>`+renderResult+
+    `<script src="/static/home.js"></script>
+    </div>`;
+    res.set('Content-Type', 'text/html')
+      .set('Access-Control-Allow-Origin', ' *')
+      .send(response);
 });
 
 app.get("/with-react-router*", (req, res) => {
