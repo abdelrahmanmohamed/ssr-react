@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import ReactDOM from "react-dom"
 import { StaticRouter as Router } from "react-router-dom";
 import Hello from "./public/components/Hello";
 import MasterForm from "./public/components/masterForm";
@@ -16,6 +17,10 @@ app.use(compression());
 app.use(cors())
 
 app.use("/static", express.static(path.resolve(__dirname, "public")));
+app.use('/static/css', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/css')))
+app.use('/static/js', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/js')))
+app.use('/static/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
+
 
 app.get("/", (req, res) => {
   const { name = "Marvelous Wololo" } = req.query;
@@ -75,6 +80,8 @@ app.get("/masterform", (req, res) => {
       <MasterForm />
   );
   const htmlStart = `
+<link rel="stylesheet" href="./static/css/bootstrap.css">
+
 <div id="masterFormDiv">`;
   res = res.set('Content-Type', 'text/html')
       .set('Access-Control-Allow-Origin', ' *');
@@ -91,6 +98,20 @@ app.get("/masterform", (req, res) => {
   });
 });
 
+app.get("/masterform2", (req, res) => {
+  const componentStream = ReactDOMServer.renderToString(
+      <MasterForm />
+  );
+  const htmlStart =
+      `<link rel="stylesheet" href="./static/css/bootstrap.css">
+        <div id="masterFormDiv">`;
+  const htmlEnd = `</div><script src="http://localhost:3000/static/masterForm.js"></script>`;
+
+  res.set('Content-Type', 'text/html')
+      .set('Access-Control-Allow-Origin', ' *')
+      .send(htmlStart+componentStream+htmlEnd);
+
+});
 
 app.get("/with-react-router*", (req, res) => {
   const context = {};

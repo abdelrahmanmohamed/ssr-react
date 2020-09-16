@@ -1,6 +1,6 @@
 const nodeExternals = require("webpack-node-externals");
 const path = require("path");
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+//const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const js = {
   test: /\.js$/,
@@ -71,7 +71,7 @@ const clientConfig = {
     ),
   },
   module: {
-    rules: [js],
+    rules: [js, cssRule ,sassRule],
   },
   optimization: {
     splitChunks: {

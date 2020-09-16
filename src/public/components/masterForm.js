@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Step1 from './step1';
 import Step2 from './step2';
 import Step3 from './step3';
-import 'bootstrap';
 
 class MasterForm extends Component {
     constructor(props) {
@@ -15,10 +14,11 @@ class MasterForm extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this._next = this._next.bind(this);
-        this._prev = this._prev.bind(this);
+        this.next = this.next.bind(this);
+        this.prev = this.prev.bind(this);
         this.previousButton = this.previousButton.bind(this);
         this.nextButton = this.nextButton.bind(this);
+        console.log("hi")
     }
 
     handleChange(event) {
@@ -37,7 +37,7 @@ class MasterForm extends Component {
            Password: ${password}`)
     }
 
-    _next() {
+    next() {
         console.log("currentStep:"+this.state.currentStep)
         let currentStep = this.state.currentStep
         currentStep = currentStep >= 2 ? 3 : currentStep + 1
@@ -47,7 +47,7 @@ class MasterForm extends Component {
         })
     }
 
-    _prev() {
+    prev() {
         console.log("currentStep:"+this.state.currentStep)
         let currentStep = this.state.currentStep
         currentStep = currentStep <= 1 ? 1 : currentStep - 1
@@ -66,7 +66,7 @@ class MasterForm extends Component {
             return (
                 <button
                     className="btn btn-secondary"
-                    type="button" onClick={this._prev}>
+                    type="button" onClick={this.prev}>
                     Previous
                 </button>
             )
@@ -80,7 +80,7 @@ class MasterForm extends Component {
             return (
                 <button
                     className="btn btn-primary float-right"
-                    type="button" onClick={this._next}>
+                    type="button" onClick={this.next}>
                     Next
                 </button>
             )
