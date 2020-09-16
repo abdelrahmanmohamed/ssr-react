@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Step1 from './step1';
 import Step2 from './step2';
 import Step3 from './step3';
-
+import 'bootstrap';
 
 class MasterForm extends Component {
     constructor(props) {
@@ -13,6 +13,12 @@ class MasterForm extends Component {
             username: '',
             password: '',
         }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this._next = this._next.bind(this);
+        this._prev = this._prev.bind(this);
+        this.previousButton = this.previousButton.bind(this);
+        this.nextButton = this.nextButton.bind(this);
     }
 
     handleChange(event) {
@@ -32,16 +38,20 @@ class MasterForm extends Component {
     }
 
     _next() {
+        console.log("currentStep:"+this.state.currentStep)
         let currentStep = this.state.currentStep
         currentStep = currentStep >= 2 ? 3 : currentStep + 1
+        console.log("new Step:"+currentStep)
         this.setState({
             currentStep: currentStep
         })
     }
 
     _prev() {
+        console.log("currentStep:"+this.state.currentStep)
         let currentStep = this.state.currentStep
         currentStep = currentStep <= 1 ? 1 : currentStep - 1
+        console.log("new Step:"+currentStep)
         this.setState({
             currentStep: currentStep
         })

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 
 class Step2 extends Component {
     
-    constructor() {
-        if (this.props.currentStep !== 2) {
-            return null
-        }
+    constructor(props) {
+        super(props)
     }
 
     render() {
+        if (this.props.currentStep !== 2) {
+            return null
+        }
         return (
             <div className="form-group">
                 <label htmlFor="username">Username</label>

@@ -59,13 +59,9 @@ app.get("/", (req, res) => {
 
 app.get("/nohtml", (req, res) => {
   const { name = "Marvelous Wololo" } = req.query;
-
   const renderResult = ReactDOMServer.renderToString (
       <Hello name={name} />
   );
-
-
-
   const response = `<div>`+renderResult+
     `<script src="http://localhost:3000/static/home.js"></script>
     </div>`;
@@ -73,6 +69,28 @@ app.get("/nohtml", (req, res) => {
       .set('Access-Control-Allow-Origin', ' *')
       .send(response);
 });
+
+app.get("/masterform", (req, res) => {
+  const componentStream = ReactDOMServer.renderToNodeStream(
+      <MasterForm />
+  );
+  const htmlStart = `
+<div id="masterFormDiv">`;
+  res = res.set('Content-Type', 'text/html')
+      .set('Access-Control-Allow-Origin', ' *');
+
+  res.write(htmlStart);
+
+  componentStream.pipe(res, { end: false });
+
+  const htmlEnd = `</div><script src="http://localhost:3000/static/masterForm.js"></script>`;
+
+  componentStream.on("end", () => {
+    res.write(htmlEnd);
+    res.end();
+  });
+});
+
 
 app.get("/with-react-router*", (req, res) => {
   const context = {};
@@ -122,31 +140,6 @@ app.get("/tutorial.json", (req, res) => {
     }
   });
 });
-
-app.get("/masterform", (req, res) => {
-  const componentStream = ReactDOMServer.renderToNodeStream(
-    <MasterForm />
-  );
-
-  const htmlStart = `    
-    <div id="masterFormDiv">    `;
-
-  res = res.set('Content-Type', 'text/html')
-    .set('Access-Control-Allow-Origin', ' *')
-  res.write(htmlStart);
-
-  componentStream.pipe(res, { end: false });
-
-  const htmlEnd = `</div>
-    <script src="http://localhost:3000/static/masterForm.js"></script>
-`;
-
-  componentStream.on("end", () => {
-    res.write(htmlEnd);
-    res.end();
-  });
-});
-
 
 app.get("*", (req, res) => {
   res.status(404).send(`

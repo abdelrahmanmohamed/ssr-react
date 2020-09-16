@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 
 class Step3 extends Component {
 
-    constructor() {
+    constructor(props) {
+        super(props)
+    }
+    render() {
         if (this.props.currentStep !== 3) {
             return null
         }
-    }
-    render() {
         return (
             <React.Fragment>
                 <div className="form-group">
